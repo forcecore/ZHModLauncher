@@ -10,15 +10,16 @@ uses
 
 type
 
-  { TForm1 }
+  { TFormMain }
 
-  TForm1 = class(TForm)
+  TFormMain = class(TForm)
     BtnRun: TButton;
     BtnRunWin: TButton;
     BtnMod: TButton;
     BtnRestore: TButton;
     ComboBox1: TComboBox;
     ImgLogo: TImage;
+    procedure FormCreate(Sender: TObject);
     procedure ImgLogoClick(Sender: TObject);
   private
     { private declarations }
@@ -27,15 +28,24 @@ type
   end; 
 
 var
-  Form1: TForm1; 
+  FormMain: TFormMain;
 
 implementation
 
-{ TForm1 }
+{ TFormMain }
 
-procedure TForm1.ImgLogoClick(Sender: TObject);
+procedure TFormMain.ImgLogoClick(Sender: TObject);
 begin
   // we will open red2.net URL.
+end;
+
+// Initialization of the program (?),
+// at least this form.
+procedure TFormMain.FormCreate(Sender: TObject);
+begin
+  // Load Logo Image
+  ImgLogo.Transparent:= true;
+  ImgLogo.Picture.PNG.LoadFromFile('logo.png');
 end;
 
 initialization

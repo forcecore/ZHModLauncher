@@ -15,7 +15,7 @@ uses
 begin
   {$I mod3.lrs}
   Application.Initialize;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TFormMain, FormMain);
   Application.Run;
 end.
 

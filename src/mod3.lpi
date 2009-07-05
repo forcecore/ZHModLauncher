@@ -35,22 +35,26 @@
         <Filename Value="mod3.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="mod3"/>
-        <UsageCount Value="20"/>
+        <CursorPos X="32" Y="14"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="1"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="mainform.pas"/>
-        <ComponentName Value="Form1"/>
+        <ComponentName Value="FormMain"/>
         <IsPartOfProject Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainForm"/>
-        <CursorPos X="32" Y="38"/>
-        <TopLine Value="19"/>
+        <CursorPos X="38" Y="42"/>
+        <TopLine Value="30"/>
         <EditorIndex Value="0"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="21"/>
         <Loaded Value="True"/>
       </Unit1>
     </Units>
-    <JumpHistory Count="9" HistoryIndex="8">
+    <JumpHistory Count="13" HistoryIndex="12">
       <Position1>
         <Filename Value="mainform.pas"/>
         <Caret Line="24" Column="19" TopLine="1"/>
@@ -87,6 +91,22 @@
         <Filename Value="mainform.pas"/>
         <Caret Line="22" Column="45" TopLine="14"/>
       </Position9>
+      <Position10>
+        <Filename Value="mainform.pas"/>
+        <Caret Line="23" Column="45" TopLine="18"/>
+      </Position10>
+      <Position11>
+        <Filename Value="mainform.pas"/>
+        <Caret Line="46" Column="41" TopLine="25"/>
+      </Position11>
+      <Position12>
+        <Filename Value="mainform.pas"/>
+        <Caret Line="23" Column="5" TopLine="22"/>
+      </Position12>
+      <Position13>
+        <Filename Value="mainform.pas"/>
+        <Caret Line="49" Column="1" TopLine="31"/>
+      </Position13>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
