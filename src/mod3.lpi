@@ -47,7 +47,7 @@
         <IsPartOfProject Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainForm"/>
-        <CursorPos X="6" Y="67"/>
+        <CursorPos X="24" Y="73"/>
         <TopLine Value="57"/>
         <EditorIndex Value="0"/>
         <UsageCount Value="23"/>
