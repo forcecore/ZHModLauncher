@@ -1,11 +1,13 @@
 object FormMain: TFormMain
-  Left = 262
-  Height = 194
-  Top = 159
-  Width = 214
+  Left = 270
+  Height = 192
+  Top = 156
+  Width = 216
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
   Caption = '모드 런처'
-  ClientHeight = 194
-  ClientWidth = 214
+  ClientHeight = 192
+  ClientWidth = 216
   OnCreate = FormCreate
   Position = poDefaultPosOnly
   LCLVersion = '0.9.26.2'
@@ -18,14 +20,14 @@ object FormMain: TFormMain
     OnClick = ImgLogoClick
     Transparent = True
   end
-  object ComboBox1: TComboBox
+  object ModList: TComboBox
     Left = 8
     Height = 20
     Top = 8
-    Width = 196
+    Width = 200
     ItemHeight = 12
+    Style = csDropDownList
     TabOrder = 0
-    Text = 'ComboBox1'
   end
   object BtnRun: TButton
     Left = 8
