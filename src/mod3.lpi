@@ -12,8 +12,6 @@
     </General>
     <VersionInfo>
       <ProjectVersion Value=""/>
-      <Language Value=""/>
-      <CharSet Value=""/>
     </VersionInfo>
     <PublishOptions>
       <Version Value="2"/>
@@ -57,9 +55,18 @@
   <CompilerOptions>
     <Version Value="8"/>
     <PathDelim Value="\"/>
+    <Target>
+      <Filename Value="..\mod3.exe"/>
+    </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)\"/>
+      <UnitOutputDirectory Value="..\output"/>
     </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <CStyleOperator Value="False"/>
+      </SyntaxOptions>
+    </Parsing>
     <Linking>
       <Options>
         <Win32>
