@@ -1,7 +1,7 @@
 object FormMain: TFormMain
-  Left = 270
+  Left = 263
   Height = 192
-  Top = 156
+  Top = 258
   Width = 216
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
@@ -34,7 +34,8 @@ object FormMain: TFormMain
     Height = 25
     Top = 32
     Width = 96
-    Caption = 'BtnRun'
+    Caption = '실행'
+    OnClick = BtnRunClick
     TabOrder = 1
   end
   object BtnRunWin: TButton
@@ -42,7 +43,8 @@ object FormMain: TFormMain
     Height = 25
     Top = 32
     Width = 96
-    Caption = 'BtnRunWin'
+    Caption = '창모드 실행'
+    OnClick = BtnRunWinClick
     TabOrder = 2
   end
   object BtnMod: TButton
@@ -50,7 +52,8 @@ object FormMain: TFormMain
     Height = 25
     Top = 64
     Width = 96
-    Caption = 'BtnMod'
+    Caption = '모드AI활성화'
+    OnClick = BtnModClick
     TabOrder = 3
   end
   object BtnRestore: TButton
@@ -58,7 +61,8 @@ object FormMain: TFormMain
     Height = 25
     Top = 64
     Width = 96
-    Caption = 'BtnRestore'
+    Caption = '원래AI복구'
+    OnClick = BtnRestoreClick
     TabOrder = 4
   end
 end
