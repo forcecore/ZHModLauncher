@@ -149,6 +149,11 @@ begin
   game_exe := installdir + 'generals.exe';
   script := installdir + 'Data\Scripts';
   dscript := installdir + 'Data\_Scripts';
+
+  // game_exe is the only parameter that is not checked by other routines.
+  // checking it here...
+  if( not FileExists( game_exe ) ) then
+    Warning( game_exe + '가 존재하지 않음!' );
 end;
 
 // get mydocuments
@@ -176,8 +181,12 @@ begin
 end;
 
 procedure TFormMain.BtnRunClick(Sender: TObject);
+var
+  param: string;
 begin
   // run the game with -mod parm.
+  param := '-mod ' + ModList.Text;
+  ShellExecute( 0, 'open', PChar(game_exe), PChar(param), nil, SW_NORMAL );
 end;
 
 procedure TFormMain.BtnModClick(Sender: TObject);
@@ -193,8 +202,12 @@ begin
 end;
 
 procedure TFormMain.BtnRunWinClick(Sender: TObject);
+var
+  param: string;
 begin
-  // run the game with -mod and -win param.
+  // run the game with -win -mod parm.
+  param := '-win -mod ' + ModList.Text;
+  ShellExecute( 0, 'open', PChar(game_exe), PChar(param), nil, SW_NORMAL );
 end;
 
 initialization
