@@ -185,7 +185,16 @@ var
   param: string;
 begin
   // run the game with -mod parm.
-  param := '-mod ' + ModList.Text;
+  param := '-mod ' + '"' + ModList.Text + '"';
+  ShellExecute( 0, 'open', PChar(game_exe), PChar(param), nil, SW_NORMAL );
+end;
+
+procedure TFormMain.BtnRunWinClick(Sender: TObject);
+var
+  param: string;
+begin
+  // run the game with -win -mod parm.
+  param := '-win -mod ' + '"' + ModList.Text + '"';
   ShellExecute( 0, 'open', PChar(game_exe), PChar(param), nil, SW_NORMAL );
 end;
 
@@ -199,15 +208,6 @@ procedure TFormMain.BtnRestoreClick(Sender: TObject);
 begin
   MoveFile( PChar(dscript), PChar(script) );
   ScanScripts();
-end;
-
-procedure TFormMain.BtnRunWinClick(Sender: TObject);
-var
-  param: string;
-begin
-  // run the game with -win -mod parm.
-  param := '-win -mod ' + ModList.Text;
-  ShellExecute( 0, 'open', PChar(game_exe), PChar(param), nil, SW_NORMAL );
 end;
 
 initialization
