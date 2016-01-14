@@ -1,0 +1,68 @@
+object FormMain: TFormMain
+  Left = 263
+  Height = 192
+  Top = 258
+  Width = 216
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
+  Caption = '모드 런처'
+  ClientHeight = 192
+  ClientWidth = 216
+  OnCreate = FormCreate
+  Position = poDefaultPosOnly
+  LCLVersion = '0.9.26.2'
+  object ImgLogo: TImage
+    Left = 8
+    Height = 90
+    Top = 96
+    Width = 200
+    Center = True
+    OnClick = ImgLogoClick
+    Transparent = True
+  end
+  object ModList: TComboBox
+    Left = 8
+    Height = 20
+    Top = 8
+    Width = 200
+    ItemHeight = 12
+    Style = csDropDownList
+    TabOrder = 0
+  end
+  object BtnRun: TButton
+    Left = 8
+    Height = 25
+    Top = 32
+    Width = 96
+    Caption = '실행'
+    OnClick = BtnRunClick
+    TabOrder = 1
+  end
+  object BtnRunWin: TButton
+    Left = 112
+    Height = 25
+    Top = 32
+    Width = 96
+    Caption = '창모드 실행'
+    OnClick = BtnRunWinClick
+    TabOrder = 2
+  end
+  object BtnMod: TButton
+    Left = 8
+    Height = 25
+    Top = 64
+    Width = 96
+    Caption = '모드AI활성화'
+    OnClick = BtnModClick
+    TabOrder = 3
+  end
+  object BtnRestore: TButton
+    Left = 112
+    Height = 25
+    Top = 64
+    Width = 96
+    Caption = '원래AI복구'
+    OnClick = BtnRestoreClick
+    TabOrder = 4
+  end
+end
