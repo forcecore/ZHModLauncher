@@ -1,0 +1,47 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: mainform.lbl_no_exe_file
+msgid "Game file %s does not exists!"
+msgstr ""
+
+#: mainform.lbl_no_mod_found
+msgid "No mod has been found."
+msgstr ""
+
+#: mainform.lbl_warning
+msgid "Warning"
+msgstr ""
+
+#: mainform.lbl_zh_not_installed
+msgid "ZH is not installed!"
+msgstr ""
+
+#: mainform.lbl_zh_reg_not_found
+msgid "Failed to read ZH Registry %s"
+msgstr ""
+
+#: TFORMMAIN.BTNMOD.CAPTION
+msgid "Enable mod AI"
+msgstr ""
+
+#: TFORMMAIN.BTNRESTORE.CAPTION
+msgid "Disable mod AI"
+msgstr ""
+
+#: TFORMMAIN.BTNRUN.CAPTION
+msgid "Run"
+msgstr ""
+
+#: TFORMMAIN.BTNRUNWIN.CAPTION
+msgid "Run Windowed"
+msgstr ""
+
+#: TFORMMAIN.CAPTION
+msgid "ZH Mod Launcher"
+msgstr ""
+
+#: TFORMMAIN.LABELVERSION.CAPTION
+msgid "v000"
+msgstr ""
+

@@ -1,0 +1,49 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: mainform.lbl_no_exe_file
+msgid "Game file %s does not exists!"
+msgstr "게임 파일 %s가 존재하지 않습니다!"
+
+#: mainform.lbl_no_mod_found
+msgid "No mod has been found."
+msgstr "설치된 모드가 없습니다."
+
+#: mainform.lbl_warning
+msgid "Warning"
+msgstr "경고"
+
+#: mainform.lbl_zh_not_installed
+msgctxt "mainform.lbl_zh_not_installed"
+msgid "ZH is not installed!"
+msgstr "제로아워가 설치되지 않았습니다."
+
+#: mainform.lbl_zh_reg_not_found
+msgid "Failed to read ZH Registry %s"
+msgstr "레지스트리 %s를 읽지 못했습니다."
+
+#: TFORMMAIN.BTNMOD.CAPTION
+msgid "Enable mod AI"
+msgstr "모드 AI 켜기"
+
+#: TFORMMAIN.BTNRESTORE.CAPTION
+msgid "Disable mod AI"
+msgstr "모드 AI 끄기"
+
+#: TFORMMAIN.BTNRUN.CAPTION
+msgid "Run"
+msgstr "실행"
+
+#: TFORMMAIN.BTNRUNWIN.CAPTION
+msgid "Run Windowed"
+msgstr "창모드로 실행"
+
+#: TFORMMAIN.CAPTION
+msgid "ZH Mod Launcher"
+msgstr "제로아워 모드 런처"
+
+#: TFORMMAIN.LABELVERSION.CAPTION
+msgctxt "TFORMMAIN.LABELVERSION.CAPTION"
+msgid "v000"
+msgstr ""
+
