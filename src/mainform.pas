@@ -35,7 +35,6 @@ type
     game_exe: string;
     moddir: string;
     // jdj's own procedures
-    procedure LoadLogo();
     procedure ScanMod();
     procedure GetDirs();
     function GetMyDoc(): string;
@@ -72,14 +71,6 @@ procedure TFormMain.ImgLogoClick(Sender: TObject);
 begin
   // we will open red2.net URL.
   ShellExecute( 0, 'open', 'http://red2.net', nil, nil, SW_SHOWNORMAL );
-end;
-
-// Load Logo Image
-procedure TFormMain.LoadLogo();
-begin
-  // we need to this, to properly use the transparency.
-  ImgLogo.Transparent:= true;
-  ImgLogo.Picture.PNG.LoadFromFile('logo.png');
 end;
 
 // show warning message
@@ -174,7 +165,6 @@ end;
 // at least this form.
 procedure TFormMain.FormCreate(Sender: TObject);
 begin
-  LoadLogo();
   GetDirs();
   ScanMod();
   ScanScripts();
