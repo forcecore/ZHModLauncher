@@ -8,6 +8,7 @@ object FormMain: TFormMain
   Caption = '모드 런처'
   ClientHeight = 192
   ClientWidth = 216
+  OnClose = FormClose
   OnCreate = FormCreate
   Position = poDefaultPosOnly
   LCLVersion = '1.4.4.0'

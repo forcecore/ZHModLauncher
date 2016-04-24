@@ -22,28 +22,33 @@ msgstr "제로아워가 설치되지 않았습니다."
 msgid "Failed to read ZH Registry %s"
 msgstr "레지스트리 %s를 읽지 못했습니다."
 
-#: TFORMMAIN.BTNMOD.CAPTION
-msgid "Enable mod AI"
+#: tformmain.btnmod.caption
+#, fuzzy
+#| msgid "Enable mod AI"
+msgid "모드AI활성화"
 msgstr "모드 AI 켜기"
 
-#: TFORMMAIN.BTNRESTORE.CAPTION
-msgid "Disable mod AI"
+#: tformmain.btnrestore.caption
+#, fuzzy
+#| msgid "Disable mod AI"
+msgid "원래AI복구"
 msgstr "모드 AI 끄기"
 
-#: TFORMMAIN.BTNRUN.CAPTION
-msgid "Run"
+#: tformmain.btnrun.caption
+#, fuzzy
+#| msgid "Run"
+msgid "실행"
 msgstr "실행"
 
-#: TFORMMAIN.BTNRUNWIN.CAPTION
-msgid "Run Windowed"
+#: tformmain.btnrunwin.caption
+#, fuzzy
+#| msgid "Run Windowed"
+msgid "창모드 실행"
 msgstr "창모드로 실행"
 
-#: TFORMMAIN.CAPTION
-msgid "ZH Mod Launcher"
+#: tformmain.caption
+#, fuzzy
+#| msgid "ZH Mod Launcher"
+msgid "모드 런처"
 msgstr "제로아워 모드 런처"
-
-#: TFORMMAIN.LABELVERSION.CAPTION
-msgctxt "TFORMMAIN.LABELVERSION.CAPTION"
-msgid "v000"
-msgstr ""
 
