@@ -27,6 +27,7 @@ type
     procedure BtnRunWinClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
     procedure ImgLogoClick(Sender: TObject);
   private
     { private declarations }
@@ -40,6 +41,9 @@ type
 
     procedure ActivateMod( mod_name: string );
     procedure DeactivateMod( mod_name: string );
+
+    procedure SavePos();
+    procedure LoadPos();
 
   public
     { public declarations }
@@ -106,6 +110,11 @@ begin
   settings := TSettings.create;
   ScanMods();
   ScanScripts();
+end;
+
+procedure TFormMain.FormShow(Sender: TObject);
+begin
+  LoadPos();
 end;
 
 // Launch the game and wait for it to finish.
@@ -184,6 +193,19 @@ begin
   zbigs.clear;
 end;
 
+procedure TFormMain.SavePos;
+begin
+  settings.conf.SetValue( '/dialog/left', Left );
+  settings.conf.SetValue( '/dialog/top', Top );
+end;
+
+procedure TFormMain.LoadPos;
+begin
+  Left := settings.conf.GetValue( '/dialog/left', Left );
+  Top := settings.conf.GetValue( '/dialog/top', Top );
+  SetBounds( Left, Top, Width, Height );
+end;
+
 procedure TFormMain.BtnRunClick(Sender: TObject);
 begin
   LaunchGame( ModList.Text, '' );
@@ -196,7 +218,9 @@ end;
 
 procedure TFormMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+  SavePos();
   zbigs.free;
+  settings.free;
 end;
 
 procedure TFormMain.BtnModClick(Sender: TObject);

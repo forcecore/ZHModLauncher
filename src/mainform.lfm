@@ -1,7 +1,7 @@
 object FormMain: TFormMain
-  Left = 365
+  Left = 348
   Height = 192
-  Top = 201
+  Top = 197
   Width = 216
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
@@ -10,7 +10,8 @@ object FormMain: TFormMain
   ClientWidth = 216
   OnClose = FormClose
   OnCreate = FormCreate
-  Position = poDefaultPosOnly
+  OnShow = FormShow
+  Position = poDefault
   LCLVersion = '1.6.0.4'
   object ImgLogo: TImage
     Left = 8

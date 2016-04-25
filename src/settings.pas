@@ -15,7 +15,6 @@ type
 
  TSettings = class
   private
-    conf: TJsonConfig;
     json_fname: string;
 
     procedure GetDirs();
@@ -30,15 +29,17 @@ type
     procedure SetGameDir(AValue: string);
 
   public
+    conf: TJsonConfig;
     game_exe: string;
     script: string;
     dscript: string;
     //moddir: string;
 
+    constructor create();
+    procedure free();
+
   property
     game_dir: string read GetGameDir write SetGameDir;
-    constructor create();
-    destructor destroy();
 end;
 
 implementation
@@ -50,7 +51,7 @@ begin
   GetDirs();
 end;
 
-destructor TSettings.destroy();
+procedure TSettings.free();
 begin
   conf.free();
 end;
@@ -62,18 +63,14 @@ begin
   // Compute JSON fname
   config_dir := GetAppConfigDir( false );
   // Check if config dir exists, create if not.
-  if( DirectoryExists( config_dir ) ) then
+  if( not DirectoryExists( config_dir ) ) then
     begin
       CreateDir( config_dir );
     end;
 
   json_fname := 'config.json';
   json_fname := path_join( config_dir, json_fname );
-  if( FileExists( json_fname ) ) then
-    begin
-      // Load it
-      conf.Filename := json_fname;
-    end;
+  conf.Filename := json_fname; // created if NE. loads if E.
 end;
 
 function TSettings.GetInstallDir(): string;
@@ -103,7 +100,7 @@ begin
         if diag.Execute then
           begin
             filename := diag.Filename;
-            ShowMessage(filename);
+            result := ExtractFilePath( filename );
           end;
       finally
         diag.free;
@@ -113,7 +110,7 @@ end;
 
 procedure TSettings.SetGameDir(AValue: string);
 begin
-  conf.SetValue( 'game_dir', AValue );
+  conf.SetValue( 'game_dir', Utf8Decode(AValue) );
 end;
 
 // get directories we need for the launcher.
@@ -127,13 +124,12 @@ begin
   //dataleaf := GenReg( 'UserDataLeafName' );
   //moddir := mydoc + dataleaf;
 
-  // Well, attempt to read reg if game_dir is empty.
+  // Well, config load failed. Attempt to read reg or read user input...
   if( game_dir = '' ) then
     begin
       game_dir := GetInstallDir();
     end;
 
-  // Attempt to read registry for installdir
   // we are ready to calculate now.
   installdir := IncludeTrailingPathDelimiter( game_dir );
   game_exe := installdir + 'generals.exe';
@@ -148,7 +144,7 @@ end;
 
 function TSettings.GetGameDir(): string;
 begin
-  result := conf.GetValue( 'game_dir', '' );
+  result := Utf8Encode( conf.GetValue( 'game_dir', '' ) );
 end;
 
 // read values from
@@ -165,7 +161,7 @@ begin
       Result := reg.ReadString( t )
     else begin
       Result := '';
-      Warning( '제로아워 레지스트리값 ' + t + ' 읽기 실패' );
+      Warning( '제로아워 레지스트리값 ' + t + ' 읽기 실패, Generals.exe를 직접 골라주세요.' );
     end;
   finally
     reg.Free;
