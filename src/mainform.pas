@@ -6,9 +6,9 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, ExtCtrls,
+  StdCtrls, ExtCtrls, Process, Windows,
   // my additions
-  Windows, Registry, Process;
+  Common, Settings;
 
 type
 
@@ -30,24 +30,12 @@ type
     procedure ImgLogoClick(Sender: TObject);
   private
     { private declarations }
-    // private variable for convenience
-    script: string;
-    dscript: string;
-    game_dir: string;
-    game_exe: string;
-    //moddir: string;
-
-    // Moved files for running mod
     zbigs: TStringList; // remembers what files are moved to game dir.
+    settings: TSettings; // game location + UI settings
     active_mod: string; // remembers what mod is active now.
 
-    // jdj's own procedures
     procedure ScanMods();
-    procedure GetDirs();
-    //function GetMyDoc(): string;
-    function GenReg( t: string ): string;
-    procedure Warning( t: string );
-    procedure ScanScripts();
+    procedure ScanScripts(); // scan scripts folder in the game & update UI
     procedure LaunchGame( mod_name:string; params: string );
 
     procedure ActivateMod( mod_name: string );
@@ -68,12 +56,12 @@ implementation
 // set button states correctly.
 procedure TFormMain.ScanScripts();
 begin
-  if( DirectoryExists( script ) ) then begin
+  if( DirectoryExists( settings.script ) ) then begin
     BtnMod.Enabled := true;
     BtnRestore.Enabled:= false;
   end;
 
-  if( DirectoryExists( dscript ) ) then begin
+  if( DirectoryExists( settings.dscript ) ) then begin
     BtnMod.Enabled := false;
     BtnRestore.Enabled:= true;
   end;
@@ -85,12 +73,6 @@ begin
   ShellExecute( 0, 'open', 'http://red2.net', nil, nil, SW_SHOWNORMAL );
 end;
 
-// show warning message
-procedure TFormMain.Warning( t:string );
-begin
-  Application.MessageBox( PChar(t), '경고', MB_ICONWARNING );
-end;
-
 // Scan mod directory.
 procedure TFormMain.ScanMods();
 var
@@ -98,7 +80,7 @@ var
   mod_dir : string;
 begin
   // scan the dirs in gamedir/Mods
-  mod_dir := IncludeTrailingPathDelimiter(game_dir)+'Mods';
+  mod_dir := IncludeTrailingPathDelimiter(settings.game_dir)+'Mods';
   If FindFirst( mod_dir + '\*', faAnyFile and faDirectory, info ) = 0 then
     begin
     Repeat
@@ -116,81 +98,12 @@ begin
     ModList.ItemIndex:= 0; // select 1st item.
 end;
 
-// read values from
-// SOFTWARE\Electronic Arts\EA Games\Command and Conquer Generals Zero Hour
-function TFormMain.GenReg( t: string ): string;
-var
-  reg: TRegistry;
-begin
-  reg := TRegistry.Create(KEY_READ);
-  try
-    reg.RootKey := HKEY_LOCAL_MACHINE;
-    reg.OpenKey('SOFTWARE\Electronic Arts\EA Games\Command and Conquer Generals Zero Hour', False);
-    if reg.ValueExists( t ) then
-      Result := reg.ReadString( t )
-    else begin
-      Result := '';
-      Warning( '제로아워 레지스트리값 ' + t + ' 읽기 실패' );
-    end;
-  finally
-    reg.Free;
-  end;
-end;
-
-// get directories we need for the launcher.
-procedure TFormMain.GetDirs();
-var
-  //mydoc: string;
-  //dataleaf: string;
-  installdir: string;
-begin
-  //mydoc := GetMyDoc();
-  //dataleaf := GenReg( 'UserDataLeafName' );
-  installdir := GenReg( 'InstallPath' );
-  if( FileExists( installdir ) ) then
-    begin
-      // installdir might contain Generals.exe!
-      // If file, FileExists returns true.
-      // If dir, returns False.
-      installdir := ExtractFilePath( installdir );
-    end;
-
-  // we are ready to calculate now.
-  //mydoc := IncludeTrailingPathDelimiter( mydoc );
-  //moddir := mydoc + dataleaf;
-
-  installdir := IncludeTrailingPathDelimiter( installdir );
-  game_dir := installdir;
-  game_exe := installdir + 'generals.exe';
-  script := installdir + 'Data\Scripts';
-  dscript := installdir + 'Data\_Scripts';
-
-  // game_exe is the only parameter that is not checked by other routines.
-  // checking it here...
-  if( not FileExists( game_exe ) ) then
-    Warning( game_exe + '가 존재하지 않음!' );
-end;
-
-// get mydocuments
-//function TFormMain.GetMyDoc(): string;
-//var
-//  PIDL : PItemIDList;
-//  Folder : array[0..MAX_PATH] of Char;
-//const
-//  // CSIDL_APPDATA  = $001A;
-//  CSIDL_PERSONAL = $0005;
-//begin
-//  SHGetSpecialFolderLocation(0, CSIDL_PERSONAL, PIDL);
-//  SHGetPathFromIDList(PIDL, Folder);
-//  result:=Folder;
-//end;
-
 // Initialization of the program (?),
 // at least this form.
 procedure TFormMain.FormCreate(Sender: TObject);
 begin
   zbigs := TStringList.create;
-  GetDirs();
+  settings := TSettings.create;
   ScanMods();
   ScanScripts();
 end;
@@ -206,7 +119,7 @@ begin
   // Run the mod
   //ShellExecute( 0, 'open', PChar(game_exe), PChar(params), nil, SW_NORMAL );
   output := '';
-  RunCommand( game_exe, params, output );
+  RunCommand( settings.game_exe, params, output );
 
   // Wait for it to finish
   DeactivateMod( mod_name );
@@ -222,7 +135,7 @@ begin
   active_mod := ModList.Text;
 
   // Find zbigs in the game/Mods/mod_name then move it to game dir.
-  mod_path := IncludeTrailingPathDelimiter(game_dir) +
+  mod_path := IncludeTrailingPathDelimiter(settings.game_dir) +
     'Mods\' + mod_name + '\';
 
   If FindFirst( mod_path + '*.zbig', faAnyFile, info ) = 0 then
@@ -239,7 +152,7 @@ begin
   begin
     fname := zbigs[ i ];
     src := mod_path + fname;
-    dest := game_dir + fname;
+    dest := settings.game_dir + fname;
     dest := StringReplace( dest, '.zbig', '.big', [rfReplaceAll] );
     MoveFile( PChar(src), PChar(dest) );
   end;
@@ -254,7 +167,7 @@ begin
   active_mod := '';
 
   // Find zbigs in the game/Mods/mod_name then move it to game dir.
-  mod_path := IncludeTrailingPathDelimiter(game_dir) +
+  mod_path := IncludeTrailingPathDelimiter(settings.game_dir) +
     'Mods\' + mod_name + '\';
 
     // For each items in zbigs, move the file to the game dir.
@@ -262,7 +175,7 @@ begin
   begin
     fname := zbigs[ i ];
     dest := mod_path + fname;
-    src := game_dir + fname;
+    src := settings.game_dir + fname;
     src := StringReplace( src, '.zbig', '.big', [rfReplaceAll] );
     //Warning( src + ' --> ' + dest );
     MoveFile( PChar(src), PChar(dest) );
@@ -288,13 +201,13 @@ end;
 
 procedure TFormMain.BtnModClick(Sender: TObject);
 begin
-  MoveFile( PChar(script), PChar(dscript) );
+  MoveFile( PChar(settings.script), PChar(settings.dscript) );
   ScanScripts();
 end;
 
 procedure TFormMain.BtnRestoreClick(Sender: TObject);
 begin
-  MoveFile( PChar(dscript), PChar(script) );
+  MoveFile( PChar(settings.dscript), PChar(settings.script) );
   ScanScripts();
 end;
 

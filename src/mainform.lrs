@@ -1,12 +1,12 @@
 { This is an automatically generated lazarus resource file }
 
 LazarusResources.Add('TFormMain','FORMDATA',[
-  'TPF0'#9'TFormMain'#8'FormMain'#4'Left'#3';'#1#6'Height'#3#192#0#3'Top'#3#172
+  'TPF0'#9'TFormMain'#8'FormMain'#4'Left'#3'm'#1#6'Height'#3#192#0#3'Top'#3#201
   +#0#5'Width'#3#216#0#11'BorderIcons'#11#12'biSystemMenu'#10'biMinimize'#0#11
   +'BorderStyle'#7#8'bsSingle'#7'Caption'#6#13#235#170#168#235#147#156' '#235
   +#159#176#236#178#152#12'ClientHeight'#3#192#0#11'ClientWidth'#3#216#0#7'OnCl'
   +'ose'#7#9'FormClose'#8'OnCreate'#7#10'FormCreate'#8'Position'#7#16'poDefault'
-  +'PosOnly'#10'LCLVersion'#6#7'1.4.4.0'#0#6'TImage'#7'ImgLogo'#4'Left'#2#8#6'H'
+  +'PosOnly'#10'LCLVersion'#6#7'1.6.0.4'#0#6'TImage'#7'ImgLogo'#4'Left'#2#8#6'H'
   +'eight'#2'Z'#3'Top'#2'`'#5'Width'#3#200#0#6'Center'#9#7'OnClick'#7#12'ImgLog'
   +'oClick'#12'Picture.Data'#10#4#7#0#0#23'TPortableNetworkGraphic'#232#6#0#0
   +#137'PNG'#13#10#26#10#0#0#0#13'IHDR'#0#0#0#195#0#0#0'['#8#3#0#0#0#249#148#193
