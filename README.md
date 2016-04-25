@@ -39,3 +39,7 @@ and execute the .exe file :)
   this operation might require Administrator privileges.
   If things don't work, consider launching the program with
   Administrator privileges.
+
+## Compiling
+* The project is created and compiled with Lazarus 1.6 (for 32bits Windows).
+* Download it and start from mod4.lpr file in src/.
