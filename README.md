@@ -35,3 +35,7 @@ and execute the .exe file :)
   them to the game folder.
 * Upon termination of the game, the launcher will revert the changes:
   .big files back as .zbig files in the mod folder.
+* Since the mod launcher is renaming files in the game folder,
+  this operation might require Administrator privileges.
+  If things don't work, consider launching the program with
+  Administrator privileges.
