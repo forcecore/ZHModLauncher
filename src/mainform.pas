@@ -6,9 +6,9 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, ExtCtrls, Process, Windows,
+  StdCtrls, ExtCtrls, Process, Windows, jsonConf,
   // my additions
-  Common, Settings;
+  Common, Settings, BIG_File;
 
 type
 
@@ -36,6 +36,9 @@ type
     active_mod: string; // remembers what mod is active now.
 
     procedure ScanMods();
+    function HasModAI( mod_name: string ): integer;
+    function ScanZbigsForAI( mod_path: string ): integer;
+    procedure ProcessMod( info : TSearchRec );
     procedure ScanScripts(); // scan scripts folder in the game & update UI
     procedure LaunchGame( mod_name:string; params: string );
 
@@ -86,20 +89,87 @@ begin
   // scan the dirs in gamedir/Mods
   mod_dir := IncludeTrailingPathDelimiter(settings.game_dir)+'Mods';
   If FindFirst( mod_dir + '\*', faAnyFile and faDirectory, info ) = 0 then
-    begin
     Repeat
-      if (info.Name <> '.') AND (info.Name <> '..') then
-        begin
-          ModList.Items.Add( info.Name );
-        end;
+      ProcessMod( info );
     Until FindNext(info) <> 0;
-    end;
   SysUtils.FindClose( info );
 
   if( ModList.Items.Count = 0 ) then
     Warning( '발견된 모드가 없습니다.' )
   else
     ModList.ItemIndex:= 0; // select 1st item.
+end;
+
+// Scan .zbig files in the mod dir and determine if the mod has AI.
+function TFormMain.HasModAI(mod_name: string): integer;
+var
+  mod_path: string;
+  mconf: TJSONConfig;
+begin
+  result := 0; // by default, not have one.
+
+  // First, see the config file first?
+  // Find zbigs in the game/Mods/mod_name then move it to game dir.
+  mod_path := IncludeTrailingPathDelimiter(settings.game_dir) +
+    'Mods\' + mod_name + '\';
+
+  mconf := TJSONConfig.Create(nil);
+  mconf.Filename := mod_path + 'config.json';
+  result := mconf.GetValue( 'has_ai', -1 );
+
+  // If we get -1 as result, that means,
+  // this is the first time scanning this mod.
+  if result = -1 then
+    begin
+      result := ScanZbigsForAI( mod_path );
+
+      // write it so that I don't have to do zbig scan again.
+      //mconf.SetValue( 'has_ai', result );
+    end;
+  // else, the result read from the config is correct.
+
+  mconf.free;
+end;
+
+function TFormMain.ScanZbigsForAI(mod_path: string): integer;
+var
+  info: TSearchRec;
+  big: TBIGPackage;
+  f: TBIGFileUnit;
+  i, cnt: integer;
+begin
+  result := 0;
+  If FindFirst( mod_path + '*.zbig', faAnyFile, info ) = 0 then
+
+    Repeat
+      // Scan the contents
+      ShowMessage( info.name );
+
+      big.Create;
+      big.LoadFile( info.name );
+      cnt := big.GetNumFiles;
+      for i := 0 to cnt-1 do
+      begin
+        f := big.GetFileInfo( i );
+        // f.Filename should be used :)
+      end;
+      big.Free;
+    Until FindNext(info) <> 0;
+
+  SysUtils.FindClose( info );
+end;
+
+procedure TFormMain.ProcessMod(info: TSearchRec);
+var
+  has_ai: integer; // I want this to be boolean but I can't
+  // Cant make TObject contain boolean...
+begin
+  if (info.Name <> '.') AND (info.Name <> '..') then
+  begin
+    //ModList.Items.Add( info.Name );
+    has_ai := HasModAI( info.Name );;
+    ModList.AddItem( info.name, TObject( has_ai ) );
+  end;
 end;
 
 // Initialization of the program (?),
@@ -148,12 +218,10 @@ begin
     'Mods\' + mod_name + '\';
 
   If FindFirst( mod_path + '*.zbig', faAnyFile, info ) = 0 then
-    begin
     Repeat
       // Add them to the mod zbig files list.
       zbigs.Add( info.name );
     Until FindNext(info) <> 0;
-    end;
   SysUtils.FindClose( info );
 
   // For each items in zbigs, move the file to the game dir.

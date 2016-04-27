@@ -1,0 +1,20 @@
+The big file decoding code is from OS BIG Editor from PPM:
+http://www.ppmsite.com/?go=osbigeditorinfo
+
+///////////////////////////////////////////////////////////////////////////////////////
+////// About Open Source BIG Editor
+///////////////////////////////////////////////////////////////////////////////////////
+
+OS BIG Editor is a program made to view BIG files and it will be able to create and edit them as well.
+
+This program was created and coded by Carlos "Banshee" Muniz and the RefPack decompression was coded by Johnathan Wilson (jonwil).
+
+The following people contributed to add features for this program:
+
+-> Danny van Loon (Drag .BIG files and Drop in the program. He also found the Drag and Drop component used in the program - v0.5)
+-> Zlatko Minev (coded the TGA Viewer - v0.5)
+-> Stuart "Stucuk" Carey (There are several things from Voxel Section Editor III and SHP Builder that he coded and were used in this program - all versions).
+
+You are free to distribute, sell, use and modify this program. However, if you distribute, sell or modify this program you must credit Banshee for coding it and jonwil for the RefPack decompression. Modifying this AboutMe file is forbidden, unless authorized by Banshee, from http://www.ppmsite.com.
+
+Note: The RefPack decompression code from jonwil follows GNU General Public Liscense and programs using it must be open source. If you want to modify this program and keep the code exclusive for you, make sure you remove the RefPack decompression code and code your own.
