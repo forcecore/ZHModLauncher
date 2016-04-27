@@ -5,7 +5,7 @@ unit Settings;
 interface
 
 uses
-  Classes, SysUtils, Registry, jsonConf, Dialogs,
+  Classes, SysUtils, Registry, jsonConf, Dialogs, Controls,
   Common;
 
 // Class to hold user settings and reading registry.
@@ -22,7 +22,7 @@ type
 
     //function GetMyDoc(): string;
     function GenReg( t: string ): string;
-    function GetInstallDir(): string;
+    function GetInstallDir: string;
 
     // Property getter setters
     function GetGameDir(): string;
@@ -73,7 +73,7 @@ begin
   conf.Filename := json_fname; // created if NE. loads if E.
 end;
 
-function TSettings.GetInstallDir(): string;
+function TSettings.GetInstallDir: string;
 var
   filename: string;
   diag: TOpenDialog;
@@ -86,26 +86,32 @@ begin
   // If dir, returns False.
   if( FileExists( result ) ) then
     begin
-      result := ExtractFilePath( result );
+      // Ask user confirmation
+       if MessageDlg( '확인', '다음 제로아워 경로가를 사용하겠습니까?:' + sLineBreak + result,
+         mtConfirmation, [mbYes, mbNo],0) = mrYes
+       then
+         begin
+           result := ExtractFilePath( result );
+           exit;
+         end
+       else
+         result := ''; // forget what we got
     end;
 
   // Still, we might have failed to find Generals.
-  // Then, let the user decide.
-  if( result = '' ) then
-    begin
-      try
-        diag := TOpenDialog.create( nil );
-        diag.Options := [ofFileMustExist];
-        diag.Filter := 'Exe파일|*.exe';
-        if diag.Execute then
-          begin
-            filename := diag.Filename;
-            result := ExtractFilePath( filename );
-          end;
-      finally
-        diag.free;
+  // Then, let the user find int.
+  try
+    diag := TOpenDialog.create( nil );
+    diag.Options := [ofFileMustExist];
+    diag.Filter := 'Exe파일|*.exe';
+    if diag.Execute then
+      begin
+        filename := diag.Filename;
+        result := ExtractFilePath( filename );
       end;
-    end;
+  finally
+    diag.free;
+  end;
 end;
 
 procedure TSettings.SetGameDir(AValue: string);
