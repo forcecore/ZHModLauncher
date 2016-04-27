@@ -25,6 +25,8 @@ and execute the .exe file :)
 * For each mod, create a folder inside the Mods folder you created.
 * Inside each folder, place .big file but change the extension as .zbig.
 * If you've downloaded mods from red2.net, the mod files should already have .zbig extension.
+* Sometimes you might choose to select Zero Hour folder again. If so, go into
+  C:\Users\\{user-id}\AppData\Local\mod4 and remove config.json file.
 
 ## Launching Mods
 * Run the mod launcher program
@@ -43,3 +45,10 @@ and execute the .exe file :)
 ## Compiling
 * The project is created and compiled with Lazarus 1.6 (for 32bits Windows).
 * Download it and start from mod4.lpr file in src/.
+
+## About .Big file decoding
+* The .big content scanning code (for seeing if the mod has AI or not) is from
+  Open Source BIG Editor: http://www.ppmsite.com/?go=osbigeditorinfo
+* OS BIG Editor by Carlos "Banshee" Muniz
+* RefPack decompression by Jonathan Wilson (jonwil)
+* See [AboutBig.txt](AboutBig.txt) for details
