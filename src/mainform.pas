@@ -42,6 +42,7 @@ type
     procedure ScanScripts(); // scan scripts folder in the game & update UI
     procedure LaunchGame( mod_name:string; params: string );
 
+    procedure MakeAIGood( mod_name: string );
     procedure ActivateMod( mod_name: string );
     procedure DeactivateMod( mod_name: string );
 
@@ -124,7 +125,7 @@ begin
       result := ScanZbigsForAI( mod_path );
 
       // write it so that I don't have to do zbig scan again.
-      //mconf.SetValue( 'has_ai', result );
+      mconf.SetValue( 'has_ai', result );
     end;
   // else, the result read from the config is correct.
 
@@ -143,16 +144,22 @@ begin
 
     Repeat
       // Scan the contents
-      ShowMessage( info.name );
-
-      big.Create;
-      big.LoadFile( info.name );
-      cnt := big.GetNumFiles;
-      for i := 0 to cnt-1 do
-      begin
-        f := big.GetFileInfo( i );
-        // f.Filename should be used :)
-      end;
+      big := TBIGPackage.Create;
+      big.LoadFile( mod_path + info.name );
+      if big.IsValid then
+        begin
+          // scan through file list, find AI related files.
+          cnt := big.GetNumFiles;
+          for i := 0 to cnt-1 do
+          begin
+            f := big.GetFileInfo( i );
+            if pos( 'skirmishscripts', lowercase( f.filename ) ) <> 0 then
+              begin
+                result := 1; // found it!!
+                break;
+              end;
+          end;
+        end;
       big.Free;
     Until FindNext(info) <> 0;
 
@@ -195,6 +202,8 @@ begin
   // Set the mod as active
   ActivateMod( mod_name );
 
+  MakeAIGood( mod_name );
+
   // Run the mod
   //ShellExecute( 0, 'open', PChar(game_exe), PChar(params), nil, SW_NORMAL );
   output := '';
@@ -202,6 +211,20 @@ begin
 
   // Wait for it to finish
   DeactivateMod( mod_name );
+end;
+
+procedure TFormMain.MakeAIGood( mod_name: string );
+var
+  has_ai: integer;
+begin
+  // Make AI good by activating the scripts folder in ZH dir.
+  has_ai := integer( ModList.Items.Objects[ ModList.ItemIndex ] );
+
+  // if has AI and mod ai needs activation...
+  if (has_ai <> 0) and (BtnMod.Enabled) then
+    BtnMod.Click
+  else if (has_ai = 0) and (BtnRestore.Enabled) then
+    BtnRestore.Click;
 end;
 
 procedure TFormMain.ActivateMod( mod_name: string );

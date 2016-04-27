@@ -35,8 +35,8 @@ type
     dscript: string;
     //moddir: string;
 
-    constructor create();
-    procedure free();
+    constructor create;
+    procedure free;
 
   property
     game_dir: string read GetGameDir write SetGameDir;
@@ -44,14 +44,14 @@ end;
 
 implementation
 
-constructor TSettings.create();
+constructor TSettings.create;
 begin
   conf := TJSONConfig.Create(nil);
   LoadConf();
   GetDirs();
 end;
 
-procedure TSettings.free();
+procedure TSettings.free;
 begin
   conf.free();
 end;
