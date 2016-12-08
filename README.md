@@ -42,6 +42,10 @@ and execute the .exe file :)
   If things don't work, consider launching the program with
   Administrator privileges.
 
+## Where are the settings saved?
+* In folder C:\Users\{user-id}\AppData\Local\mod4,
+* The settings are saved in plain text, as config.json.
+
 ## Compiling
 * The project is created and compiled with Lazarus 1.6 (for 32bits Windows).
 * Download it and start from mod4.lpr file in src/.
