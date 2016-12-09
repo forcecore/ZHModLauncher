@@ -48,6 +48,7 @@ type
     procedure MakeAIGood( mod_name: string );
     procedure ActivateMod( mod_name: string );
     procedure DeactivateMod();
+    procedure UpdateStatusBar();
 
     procedure SavePos();
     procedure LoadPos();
@@ -181,6 +182,7 @@ begin
   settings := TSettings.create;
   ScanMods();
   ScanScripts();
+  UpdateStatusBar();
 end;
 
 procedure TFormMain.FormShow(Sender: TObject);
@@ -259,7 +261,7 @@ var
 begin
   // From saved settings, determine what mod is active.
   mod_name := settings.conf.GetValue( '/current_mod/name', '' );
-  if compareStr( mod_name, '' ) = 0 then
+  if length( mod_name ) = 0 then
     exit;
 
   // Find zbigs in the game/Mods/mod_name then move it to game dir.
@@ -280,6 +282,17 @@ begin
 
   // Mark as deactive.
   settings.conf.SetValue( '/current_mod/name', '' );
+end;
+
+procedure TFormMain.UpdateStatusBar;
+var
+  mod_name: string;
+begin
+  mod_name := settings.conf.GetValue( '/current_mod/name', '' );
+  if length( mod_name ) = 0 then
+    StatusBar1.SimpleText := '모드 꺼짐'
+  else
+    StatusBar1.SimpleText := mod_name + ' 켜짐';
 end;
 
 procedure TFormMain.SavePos;
@@ -320,6 +333,7 @@ end;
 procedure TFormMain.BtnModOffClick(Sender: TObject);
 begin
   DeactivateMod();
+  UpdateStatusBar();
 end;
 
 procedure TFormMain.BtnModOnClick(Sender: TObject);
@@ -327,6 +341,7 @@ begin
   DeactivateMod(); // Make way for the next mod.
   ActivateMod( ModList.Text );
   MakeAIGood( ModList.Text );
+  UpdateStatusBar();
 end;
 
 procedure TFormMain.BtnRestoreClick(Sender: TObject);

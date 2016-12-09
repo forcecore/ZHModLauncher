@@ -1,13 +1,13 @@
 object FormMain: TFormMain
-  Left = 265
+  Left = 318
   Height = 261
-  Top = 158
-  Width = 219
+  Top = 178
+  Width = 220
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = '모드 실행기'
   ClientHeight = 261
-  ClientWidth = 219
+  ClientWidth = 220
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
@@ -139,7 +139,7 @@ object FormMain: TFormMain
     Left = 0
     Height = 29
     Top = 232
-    Width = 219
+    Width = 220
     Panels = <>
   end
   object BtnModOn: TButton
