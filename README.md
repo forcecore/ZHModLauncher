@@ -41,6 +41,8 @@ and execute the .exe file :)
   this operation might require Administrator privileges.
   If things don't work, consider launching the program with
   Administrator privileges.
+* If you see an error message like "SymFromAddr" blah blah by OriginThinSetupInternal.exe,
+  Then you need to run Origin first, before launching the game.
 
 ## Where are the settings saved?
 * In folder C:\Users\{user-id}\AppData\Local\mod4,
