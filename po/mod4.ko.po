@@ -28,6 +28,15 @@ msgstr "레지스트리 %s를 읽지 못했습니다."
 msgid "모드AI활성화"
 msgstr "모드 AI 켜기"
 
+#: tformmain.btnmodoff.caption
+msgctxt "tformmain.btnmodoff.caption"
+msgid "모드 끄기"
+msgstr ""
+
+#: tformmain.btnmodon.caption
+msgid "모드 켜기"
+msgstr ""
+
 #: tformmain.btnrestore.caption
 #, fuzzy
 #| msgid "Disable mod AI"
@@ -48,7 +57,7 @@ msgstr "창모드로 실행"
 
 #: tformmain.caption
 #, fuzzy
-#| msgid "ZH Mod Launcher"
-msgid "모드 런처"
+#| msgid "모드 런처"
+msgid "모드 실행기"
 msgstr "제로아워 모드 런처"
 

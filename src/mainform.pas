@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, ExtCtrls, Process, Windows, jsonConf,
+  StdCtrls, ExtCtrls, ComCtrls, Process, Windows, jsonConf,
   // my additions
   Common, Settings, BIG_File;
 
@@ -19,9 +19,14 @@ type
     BtnRunWin: TButton;
     BtnMod: TButton;
     BtnRestore: TButton;
+    BtnModOff: TButton;
+    BtnModOn: TButton;
     ModList: TComboBox;
     ImgLogo: TImage;
+    StatusBar1: TStatusBar;
     procedure BtnModClick(Sender: TObject);
+    procedure BtnModOffClick(Sender: TObject);
+    procedure BtnModOnClick(Sender: TObject);
     procedure BtnRestoreClick(Sender: TObject);
     procedure BtnRunClick(Sender: TObject);
     procedure BtnRunWinClick(Sender: TObject);
@@ -31,20 +36,18 @@ type
     procedure ImgLogoClick(Sender: TObject);
   private
     { private declarations }
-    zbigs: TStringList; // remembers what files are moved to game dir.
     settings: TSettings; // game location + UI settings
-    active_mod: string; // remembers what mod is active now.
 
     procedure ScanMods();
-    function HasModAI( mod_name: string ): integer;
-    function ScanZbigsForAI( mod_path: string ): integer;
+    function ScanModAI( mod_name: string ): boolean;
+    function ScanZbigsForAI( mod_path: string ): boolean;
     procedure ProcessMod( info : TSearchRec );
     procedure ScanScripts(); // scan scripts folder in the game & update UI
-    procedure LaunchGame( mod_name:string; params: string );
+    procedure LaunchGame( params: string );
 
     procedure MakeAIGood( mod_name: string );
     procedure ActivateMod( mod_name: string );
-    procedure DeactivateMod( mod_name: string );
+    procedure DeactivateMod();
 
     procedure SavePos();
     procedure LoadPos();
@@ -102,44 +105,40 @@ begin
 end;
 
 // Scan .zbig files in the mod dir and determine if the mod has AI.
-function TFormMain.HasModAI(mod_name: string): integer;
+function TFormMain.ScanModAI(mod_name: string): boolean;
 var
   mod_path: string;
-  mconf: TJSONConfig;
+  tmp: integer;
 begin
-  result := 0; // by default, not have one.
+  result := false; // by default, not have one.
 
-  // First, see the config file first?
-  // Find zbigs in the game/Mods/mod_name then move it to game dir.
-  mod_path := IncludeTrailingPathDelimiter(settings.game_dir) +
-    'Mods\' + mod_name + '\';
-
-  mconf := TJSONConfig.Create(nil);
-  mconf.Filename := mod_path + 'config.json';
-  result := mconf.GetValue( 'has_ai', -1 );
+  // First, see the config file first.
+  tmp := settings.conf.GetValue( '/has_ai/' + mod_name, -1 );
 
   // If we get -1 as result, that means,
   // this is the first time scanning this mod.
-  if result = -1 then
+  if tmp <> -1 then
+    result := boolean( tmp )
+  else
     begin
+      // Find zbigs in the game/Mods/mod_name then move it to game dir.
+      mod_path := IncludeTrailingPathDelimiter(settings.game_dir) +
+        'Mods\' + mod_name + '\';
       result := ScanZbigsForAI( mod_path );
 
       // write it so that I don't have to do zbig scan again.
-      mconf.SetValue( 'has_ai', result );
-    end;
-  // else, the result read from the config is correct.
-
-  mconf.free;
+      settings.conf.SetValue( '/has_ai/' + mod_name, Integer( result ) );
+    end
 end;
 
-function TFormMain.ScanZbigsForAI(mod_path: string): integer;
+function TFormMain.ScanZbigsForAI(mod_path: string): boolean;
 var
   info: TSearchRec;
   big: TBIGPackage;
   f: TBIGFileUnit;
   i, cnt: integer;
 begin
-  result := 0;
+  result := false;
   If FindFirst( mod_path + '*.zbig', faAnyFile, info ) = 0 then
 
     Repeat
@@ -155,7 +154,7 @@ begin
             f := big.GetFileInfo( i );
             if pos( 'skirmishscripts', lowercase( f.filename ) ) <> 0 then
               begin
-                result := 1; // found it!!
+                result := true; // found it!!
                 break;
               end;
           end;
@@ -167,15 +166,11 @@ begin
 end;
 
 procedure TFormMain.ProcessMod(info: TSearchRec);
-var
-  has_ai: integer; // I want this to be boolean but I can't
-  // Cant make TObject contain boolean...
 begin
   if (info.Name <> '.') AND (info.Name <> '..') then
   begin
-    //ModList.Items.Add( info.Name );
-    has_ai := HasModAI( info.Name );;
-    ModList.AddItem( info.name, TObject( has_ai ) );
+    ScanModAI( info.Name );;
+    ModList.AddItem( info.name, nil );
   end;
 end;
 
@@ -183,7 +178,6 @@ end;
 // at least this form.
 procedure TFormMain.FormCreate(Sender: TObject);
 begin
-  zbigs := TStringList.create;
   settings := TSettings.create;
   ScanMods();
   ScanScripts();
@@ -194,37 +188,32 @@ begin
   LoadPos();
 end;
 
-// Launch the game and wait for it to finish.
-procedure TFormMain.LaunchGame( mod_name: string; params: string );
+// Just launch the game.
+// The user knows how and when to actiave or deactivate stuff.
+procedure TFormMain.LaunchGame( params: string );
 var
   output: string;
 begin
-  // Set the mod as active
-  ActivateMod( mod_name );
-
-  MakeAIGood( mod_name );
-
   // Run the mod
-  //ShellExecute( 0, 'open', PChar(game_exe), PChar(params), nil, SW_NORMAL );
+  // ShellExecute( 0, 'open', PChar(game_exe), PChar(params), nil, SW_NORMAL );
   output := '';
   RunCommand( settings.game_exe, params, output );
-
-  // Wait for it to finish
-  DeactivateMod( mod_name );
 end;
 
+// Makes sure that mod AI is activated if required.
 procedure TFormMain.MakeAIGood( mod_name: string );
 var
   has_ai: integer;
 begin
-  // Make AI good by activating the scripts folder in ZH dir.
-  has_ai := integer( ModList.Items.Objects[ ModList.ItemIndex ] );
+  // has AI? If so, turn it on.
+  has_ai := settings.conf.GetValue( '/has_ai/' + mod_name, -1 );
+  assert( has_ai <> -1 );
 
   // if has AI and mod ai needs activation...
   if (has_ai <> 0) and (BtnMod.Enabled) then
-    BtnMod.Click
+    BtnModClick( nil )
   else if (has_ai = 0) and (BtnRestore.Enabled) then
-    BtnRestore.Click;
+    BtnRestoreClick( nil );
 end;
 
 procedure TFormMain.ActivateMod( mod_name: string );
@@ -233,19 +222,28 @@ var
   info : TSearchRec;
   fname, mod_path: string;
   src, dest: string;
+  zbigs: TStringList;
 begin
-  active_mod := ModList.Text;
-
   // Find zbigs in the game/Mods/mod_name then move it to game dir.
   mod_path := IncludeTrailingPathDelimiter(settings.game_dir) +
     'Mods\' + mod_name + '\';
 
+  zbigs := TStringList.Create;
   If FindFirst( mod_path + '*.zbig', faAnyFile, info ) = 0 then
     Repeat
       // Add them to the mod zbig files list.
       zbigs.Add( info.name );
     Until FindNext(info) <> 0;
   SysUtils.FindClose( info );
+  
+  // Remember these settings so that it may be deactivated later,
+  // even after the mod launhcher is terminated.
+  settings.conf.SetValue( '/current_mod/name', mod_name );
+  settings.conf.SetValue( '/current_mod/files/cnt', zbigs.count );
+  for i := 0 to zbigs.count-1 do
+	begin
+	  settings.conf.SetValue( '/current_mod/files/' + IntToStr(i), zbigs[ i ] );
+	end;
 
   // For each items in zbigs, move the file to the game dir.
   for i := 0 to zbigs.Count-1 do
@@ -258,30 +256,35 @@ begin
   end;
 end;
 
-procedure TFormMain.DeactivateMod( mod_name: string );
+procedure TFormMain.DeactivateMod();
 var
-  i : Integer;
-  fname, mod_path: string;
+  i, cnt : Integer;
+  mod_name, fname, mod_path: string;
   src, dest: string;
 begin
-  active_mod := '';
+  // From saved settings, determine what mod is active.
+  mod_name := settings.conf.GetValue( '/current_mod/name', '' );
+  if compareStr( mod_name, '' ) = 0 then
+    exit;
 
   // Find zbigs in the game/Mods/mod_name then move it to game dir.
   mod_path := IncludeTrailingPathDelimiter(settings.game_dir) +
     'Mods\' + mod_name + '\';
 
-    // For each items in zbigs, move the file to the game dir.
-  for i := 0 to zbigs.Count-1 do
+  // Read the settings and move those into the mod dir.
+  cnt := settings.conf.GetValue( '/current_mod/files/cnt', 0 );
+  for i := 0 to cnt-1 do
   begin
-    fname := zbigs[ i ];
+    fname := settings.conf.GetValue( '/current_mod/files/'+IntToStr(i), '' );
     dest := mod_path + fname;
     src := settings.game_dir + fname;
     src := StringReplace( src, '.zbig', '.big', [rfReplaceAll] );
-    //Warning( src + ' --> ' + dest );
+    // Warning( src + ' --> ' + dest );
     MoveFile( PChar(src), PChar(dest) );
   end;
 
-  zbigs.clear;
+  // Mark as deactive.
+  settings.conf.SetValue( '/current_mod/name', '' );
 end;
 
 procedure TFormMain.SavePos;
@@ -299,18 +302,17 @@ end;
 
 procedure TFormMain.BtnRunClick(Sender: TObject);
 begin
-  LaunchGame( ModList.Text, '' );
+  LaunchGame( '' );
 end;
 
 procedure TFormMain.BtnRunWinClick(Sender: TObject);
 begin
-  LaunchGame( ModList.Text, '-win' );
+  LaunchGame( '-win' );
 end;
 
 procedure TFormMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   SavePos();
-  zbigs.free;
   settings.free;
 end;
 
@@ -318,6 +320,18 @@ procedure TFormMain.BtnModClick(Sender: TObject);
 begin
   MoveFile( PChar(settings.script), PChar(settings.dscript) );
   ScanScripts();
+end;
+
+procedure TFormMain.BtnModOffClick(Sender: TObject);
+begin
+  DeactivateMod();
+end;
+
+procedure TFormMain.BtnModOnClick(Sender: TObject);
+begin
+  DeactivateMod(); // Make way for the next mod.
+  ActivateMod( ModList.Text );
+  MakeAIGood( ModList.Text );
 end;
 
 procedure TFormMain.BtnRestoreClick(Sender: TObject);

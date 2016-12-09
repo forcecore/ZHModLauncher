@@ -1,23 +1,23 @@
 object FormMain: TFormMain
-  Left = 348
-  Height = 192
-  Top = 197
-  Width = 216
-  BorderIcons = [biSystemMenu, biMinimize]
+  Left = 265
+  Height = 261
+  Top = 158
+  Width = 219
+  BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
-  Caption = '모드 런처'
-  ClientHeight = 192
-  ClientWidth = 216
+  Caption = '모드 실행기'
+  ClientHeight = 261
+  ClientWidth = 219
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poDefault
-  LCLVersion = '1.6.0.4'
+  LCLVersion = '1.6.2.0'
   object ImgLogo: TImage
     Left = 8
     Height = 90
-    Top = 96
-    Width = 200
+    Top = 136
+    Width = 204
     Center = True
     OnClick = ImgLogoClick
     Picture.Data = {
@@ -83,18 +83,18 @@ object FormMain: TFormMain
   end
   object ModList: TComboBox
     Left = 8
-    Height = 23
+    Height = 28
     Top = 8
-    Width = 200
-    ItemHeight = 15
+    Width = 204
+    ItemHeight = 20
     Style = csDropDownList
     TabOrder = 0
   end
   object BtnRun: TButton
     Left = 8
     Height = 25
-    Top = 32
-    Width = 96
+    Top = 104
+    Width = 100
     Caption = '실행'
     OnClick = BtnRunClick
     TabOrder = 1
@@ -102,8 +102,8 @@ object FormMain: TFormMain
   object BtnRunWin: TButton
     Left = 112
     Height = 25
-    Top = 32
-    Width = 96
+    Top = 104
+    Width = 100
     Caption = '창모드 실행'
     OnClick = BtnRunWinClick
     TabOrder = 2
@@ -111,8 +111,8 @@ object FormMain: TFormMain
   object BtnMod: TButton
     Left = 8
     Height = 25
-    Top = 64
-    Width = 96
+    Top = 72
+    Width = 100
     Caption = '모드AI활성화'
     OnClick = BtnModClick
     TabOrder = 3
@@ -120,10 +120,35 @@ object FormMain: TFormMain
   object BtnRestore: TButton
     Left = 112
     Height = 25
-    Top = 64
-    Width = 96
+    Top = 72
+    Width = 100
     Caption = '원래AI복구'
     OnClick = BtnRestoreClick
     TabOrder = 4
+  end
+  object BtnModOff: TButton
+    Left = 112
+    Height = 25
+    Top = 40
+    Width = 100
+    Caption = '모드 끄기'
+    OnClick = BtnModOffClick
+    TabOrder = 5
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Height = 29
+    Top = 232
+    Width = 219
+    Panels = <>
+  end
+  object BtnModOn: TButton
+    Left = 8
+    Height = 25
+    Top = 40
+    Width = 100
+    Caption = '모드 켜기'
+    OnClick = BtnModOnClick
+    TabOrder = 7
   end
 end

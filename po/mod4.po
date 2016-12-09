@@ -25,6 +25,15 @@ msgstr ""
 msgid "모드AI활성화"
 msgstr ""
 
+#: tformmain.btnmodoff.caption
+msgctxt "TFORMMAIN.BTNMODOFF.CAPTION"
+msgid "모드 끄기"
+msgstr ""
+
+#: tformmain.btnmodon.caption
+msgid "모드 켜기"
+msgstr ""
+
 #: tformmain.btnrestore.caption
 msgid "원래AI복구"
 msgstr ""
@@ -38,6 +47,6 @@ msgid "창모드 실행"
 msgstr ""
 
 #: tformmain.caption
-msgid "모드 런처"
+msgid "모드 실행기"
 msgstr ""
 
