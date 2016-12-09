@@ -188,16 +188,11 @@ begin
   LoadPos();
 end;
 
-// Just launch the game.
-// The user knows how and when to actiave or deactivate stuff.
 procedure TFormMain.LaunchGame( params: string );
-var
-  output: string;
 begin
-  // Run the mod
-  // ShellExecute( 0, 'open', PChar(game_exe), PChar(params), nil, SW_NORMAL );
-  output := '';
-  RunCommand( settings.game_exe, params, output );
+  // Just run the game. Don't wait for it.
+  // The user knows how and when to actiave or deactivate stuff.
+  ShellExecute( 0, nil, PChar(settings.game_exe), PChar(params), nil, SW_NORMAL );
 end;
 
 // Makes sure that mod AI is activated if required.
