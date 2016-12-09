@@ -53,6 +53,7 @@ end;
 
 procedure TSettings.free;
 begin
+  conf.Formatted := true;
   conf.free();
 end;
 
