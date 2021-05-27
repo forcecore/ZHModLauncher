@@ -5,7 +5,7 @@ unit Settings;
 interface
 
 uses
-  Classes, SysUtils, Registry, jsonConf, Dialogs, Controls,
+  Classes, Forms, SysUtils, Registry, jsonConf, Dialogs, Controls,
   Common;
 
 // Class to hold user settings and reading registry.
@@ -21,7 +21,7 @@ type
     procedure LoadConf();
 
     //function GetMyDoc(): string;
-    function GenReg( t: string ): string;
+    function FindGeneralsExe( t: string ): string;
     function GetInstallDir: string;
 
     // Property getter setters
@@ -80,7 +80,7 @@ var
   diag: TOpenDialog;
 begin
   // Number 1, try registry.
-  result := GenReg( 'InstallPath' );
+  result := FindGeneralsExe( 'InstallPath' );
 
   // installdir might point to Generals.exe!
   // If file, FileExists returns true.
@@ -88,7 +88,7 @@ begin
   if( FileExists( result ) ) then
     begin
       // Ask user confirmation
-       if MessageDlg( '확인', '다음 제로아워 경로가를 사용하겠습니까?:' + sLineBreak + result,
+       if MessageDlg( '확인', '다음 제로아워 경로를 사용하겠습니까?:' + sLineBreak + result,
          mtConfirmation, [mbYes, mbNo],0) = mrYes
        then
          begin
@@ -128,7 +128,7 @@ var
   installdir: string;
 begin
   //mydoc := GetMyDoc();
-  //dataleaf := GenReg( 'UserDataLeafName' );
+  //dataleaf := FindGeneralsExe( 'UserDataLeafName' );
   //moddir := mydoc + dataleaf;
 
   // Well, config load failed. Attempt to read reg or read user input...
@@ -139,7 +139,7 @@ begin
 
   // we are ready to calculate now.
   installdir := IncludeTrailingPathDelimiter( game_dir );
-  game_exe := installdir + 'generals.exe';
+  game_exe := installdir + 'Generals.exe';
   script := installdir + 'Data\Scripts';
   dscript := installdir + 'Data\_Scripts';
 
@@ -154,22 +154,66 @@ begin
   result := Utf8Encode( conf.GetValue( 'game_dir', '' ) );
 end;
 
+function TryReadRegKey(
+  reg: TRegistry;
+  key: string;
+  t: string
+): string;
+var
+  tmp: string;
+begin
+  Result := '';
+  if reg.KeyExists(key) then
+  begin
+    reg.OpenKeyReadOnly(key);
+    if reg.ValueExists(t) then
+      tmp := reg.ReadString( t );
+    reg.CloseKey();
+
+    tmp := path_join(tmp, 'Generals.exe');
+    if FileExists(tmp) then
+      Result := tmp;
+  end;
+end;
+
+function ResolveZH(
+  reg: TRegistry;
+  t: string
+): string;
+var
+  key: string;
+  tmp: string;
+begin
+  Result := TryReadRegKey(reg, 'SOFTWARE\Electronic Arts\EA Games\Command and Conquer Generals Zero Hour', t);
+  if Result <> '' then Exit(Result);
+
+  Result := TryReadRegKey(reg, 'SOFTWARE\WOW6432Node\Electronic Arts\EA Games\Command and Conquer Generals Zero Hour', t);
+  if Result <> '' then Exit(Result);
+
+  Result := TryReadRegKey(reg, 'SOFTWARE\Electronic Arts\EA Games\Generals', t);
+  if Result <> '' then Exit(Result);
+
+  Result := TryReadRegKey(reg, 'SOFTWARE\WOW6432Node\Electronic Arts\EA Games\Generals', t);
+  if Result <> '' then Exit(Result);
+
+  // Try where mod4.exe is
+  tmp := path_join(ExtractFileDir(Application.ExeName), 'Generals.exe');
+  if FileExists(tmp) then
+    Result := tmp;
+end;
+
 // read values from
 // SOFTWARE\Electronic Arts\EA Games\Command and Conquer Generals Zero Hour
-function TSettings.GenReg( t: string ): string;
+function TSettings.FindGeneralsExe( t: string ): string;
 var
   reg: TRegistry;
 begin
   reg := TRegistry.Create(KEY_READ);
   try
     reg.RootKey := HKEY_LOCAL_MACHINE;
-    reg.OpenKey('SOFTWARE\Electronic Arts\EA Games\Command and Conquer Generals Zero Hour', False);
-    if reg.ValueExists( t ) then
-      Result := reg.ReadString( t )
-    else begin
-      Result := '';
+    Result := ResolveZH(reg, t);
+    if Result = '' then
       Warning( '제로아워 레지스트리값 ' + t + ' 읽기 실패, Generals.exe를 직접 골라주세요.' );
-    end;
   finally
     reg.Free;
   end;

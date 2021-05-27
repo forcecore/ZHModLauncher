@@ -18,4 +18,3 @@ begin
   Application.CreateForm(TFormMain, FormMain);
   Application.Run;
 end.
-

@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, ExtCtrls, ComCtrls, Process, Windows, jsonConf,
+  StdCtrls, ExtCtrls, ComCtrls, Windows, jsonConf,
   // my additions
   Common, Settings, BIG_File;
 
@@ -55,7 +55,7 @@ type
 
   public
     { public declarations }
-  end; 
+  end;
 
 var
   FormMain: TFormMain;
@@ -236,7 +236,7 @@ begin
       zbigs.Add( info.name );
     Until FindNext(info) <> 0;
   SysUtils.FindClose( info );
-  
+
   // Remember these settings so that it may be deactivated later,
   // even after the mod launhcher is terminated.
   settings.conf.SetValue( '/current_mod/name', mod_name );
@@ -358,4 +358,3 @@ initialization
   {$I mainform.lrs}
 
 end.
-
