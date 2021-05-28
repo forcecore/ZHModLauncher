@@ -92,7 +92,7 @@ var
   mod_dir : string;
 begin
   // scan the dirs in gamedir/Mods
-  mod_dir := IncludeTrailingPathDelimiter(settings.game_dir)+'Mods';
+  mod_dir := path_join(settings.game_dir, 'Mods');
   If FindFirst( mod_dir + '\*', faAnyFile and faDirectory, info ) = 0 then
     Repeat
       ProcessMod( info );
@@ -196,7 +196,8 @@ procedure TFormMain.LaunchGame( params: string );
 begin
   // Just run the game. Don't wait for it.
   // The user knows how and when to actiave or deactivate stuff.
-  ShellExecute( 0, nil, PChar(settings.game_exe), PChar(params), nil, SW_NORMAL );
+  ShellExecute( 0, nil, PChar(settings.game_exe), PChar(params), PChar(settings.game_dir), SW_NORMAL );
+  // RunAsAdmin(FormMain.Handle, settings.game_exe, params);
   //RunCommand( settings.game_exe, [params], s );
   //SysUtils.ExecuteProcess(settings.game_exe, params, []);
 end;
@@ -250,9 +251,10 @@ begin
   for i := 0 to zbigs.Count-1 do
   begin
     fname := zbigs[ i ];
-    src := mod_path + fname;
-    dest := settings.game_dir + fname;
+    src := path_join(mod_path, fname);
+    dest := path_join(settings.game_dir, fname);
     dest := StringReplace( dest, '.zbig', '.big', [rfReplaceAll] );
+    // Warning( src + ' --> ' + dest );
     MoveFile( PChar(src), PChar(dest) );
   end;
 end;
@@ -265,7 +267,7 @@ var
 begin
   // From saved settings, determine what mod is active.
   mod_name := settings.conf.GetValue( '/current_mod/name', '' );
-  if length( mod_name ) = 0 then
+  if mod_name = '' then
     exit;
 
   // Find zbigs in the game/Mods/mod_name then move it to game dir.
@@ -277,8 +279,8 @@ begin
   for i := 0 to cnt-1 do
   begin
     fname := settings.conf.GetValue( '/current_mod/files/'+IntToStr(i), '' );
-    dest := mod_path + fname;
-    src := settings.game_dir + fname;
+    dest := path_join(mod_path, fname);
+    src := path_join(settings.game_dir, fname);
     src := StringReplace( src, '.zbig', '.big', [rfReplaceAll] );
     // Warning( src + ' --> ' + dest );
     MoveFile( PChar(src), PChar(dest) );

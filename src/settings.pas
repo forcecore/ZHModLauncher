@@ -21,7 +21,7 @@ type
     procedure LoadConf();
 
     //function GetMyDoc(): string;
-    function FindGeneralsExe( t: string ): string;
+    function FindGeneralsExe(): string;
     function GetInstallDir: string;
 
     // Property getter setters
@@ -69,9 +69,9 @@ begin
       CreateDir( config_dir );
     end;
 
-  json_fname := 'config.json';
-  json_fname := path_join( config_dir, json_fname );
-  conf.Filename := json_fname; // created if NE. loads if E.
+  json_fname := 'mod4_config.json';
+  json_fname := path_join(ExtractFileDir(Application.ExeName), json_fname);
+  conf.Filename := json_fname; // Created if not exists. Loads it otherwise.
 end;
 
 function TSettings.GetInstallDir: string;
@@ -80,7 +80,7 @@ var
   diag: TOpenDialog;
 begin
   // Number 1, try registry.
-  result := FindGeneralsExe( 'InstallPath' );
+  result := FindGeneralsExe();
 
   // installdir might point to Generals.exe!
   // If file, FileExists returns true.
@@ -117,7 +117,7 @@ end;
 
 procedure TSettings.SetGameDir(AValue: string);
 begin
-  conf.SetValue( 'game_dir', Utf8Decode(AValue) );
+  conf.SetValue( Utf8Decode('game_dir'), Utf8Decode(AValue) );
 end;
 
 // get directories we need for the launcher.
@@ -128,7 +128,7 @@ var
   installdir: string;
 begin
   //mydoc := GetMyDoc();
-  //dataleaf := FindGeneralsExe( 'UserDataLeafName' );
+  //dataleaf := FindGeneralsExe();
   //moddir := mydoc + dataleaf;
 
   // Well, config load failed. Attempt to read reg or read user input...
@@ -157,43 +157,38 @@ end;
 function TryReadRegKey(
   reg: TRegistry;
   key: string;
-  t: string
+  subkey: string;
+  exe_path: string
 ): string;
 var
   tmp: string;
 begin
-  Result := '';
   if reg.KeyExists(key) then
   begin
     reg.OpenKeyReadOnly(key);
-    if reg.ValueExists(t) then
-      tmp := reg.ReadString( t );
+    if reg.ValueExists(subkey) then
+      tmp := reg.ReadString(subkey);
     reg.CloseKey();
 
-    tmp := path_join(tmp, 'Generals.exe');
+    tmp := path_join(tmp, exe_path);
     if FileExists(tmp) then
       Result := tmp;
   end;
 end;
 
-function ResolveZH(
-  reg: TRegistry;
-  t: string
-): string;
+function ResolveZH(reg: TRegistry): string;
 var
-  key: string;
   tmp: string;
 begin
-  Result := TryReadRegKey(reg, 'SOFTWARE\Electronic Arts\EA Games\Command and Conquer Generals Zero Hour', t);
+  // Try the Ultimatate Collection launcher first, if exists.
+  Result := TryReadRegKey(reg, 'SOFTWARE\EA Games\Command and Conquer Generals Zero Hour', 'Install Dir', 'Command and Conquer Generals Zero Hour\Generals.exe');
+  if Result <> '' then Exit(Result);
+  Result := TryReadRegKey(reg, 'SOFTWARE\WOW6432Node\EA Games\Command and Conquer Generals Zero Hour', 'Install Dir', 'Command and Conquer Generals Zero Hour\Generals.exe');
   if Result <> '' then Exit(Result);
 
-  Result := TryReadRegKey(reg, 'SOFTWARE\WOW6432Node\Electronic Arts\EA Games\Command and Conquer Generals Zero Hour', t);
+  Result := TryReadRegKey(reg, 'SOFTWARE\Electronic Arts\EA Games\Command and Conquer Generals Zero Hour', 'InstallPath', 'Generals.exe');
   if Result <> '' then Exit(Result);
-
-  Result := TryReadRegKey(reg, 'SOFTWARE\Electronic Arts\EA Games\Generals', t);
-  if Result <> '' then Exit(Result);
-
-  Result := TryReadRegKey(reg, 'SOFTWARE\WOW6432Node\Electronic Arts\EA Games\Generals', t);
+  Result := TryReadRegKey(reg, 'SOFTWARE\WOW6432Node\Electronic Arts\EA Games\Command and Conquer Generals Zero Hour', 'InstallPath', 'Generals.exe');
   if Result <> '' then Exit(Result);
 
   // Try where mod4.exe is
@@ -204,16 +199,18 @@ end;
 
 // read values from
 // SOFTWARE\Electronic Arts\EA Games\Command and Conquer Generals Zero Hour
-function TSettings.FindGeneralsExe( t: string ): string;
+// SOFTWARE\WOW6432Node\EA Games\Command and Conquer Generals Zero Hour
+// ... etc.
+function TSettings.FindGeneralsExe(): string;
 var
   reg: TRegistry;
 begin
   reg := TRegistry.Create(KEY_READ);
   try
     reg.RootKey := HKEY_LOCAL_MACHINE;
-    Result := ResolveZH(reg, t);
+    Result := ResolveZH(reg);
     if Result = '' then
-      Warning( '제로아워 레지스트리값 ' + t + ' 읽기 실패, Generals.exe를 직접 골라주세요.' );
+      Warning( '레지스트리로 제로아워 찾기 실패, Generals.exe를 직접 골라주세요.' );
   finally
     reg.Free;
   end;

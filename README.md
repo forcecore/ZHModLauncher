@@ -15,6 +15,9 @@ Mod launcher/manager for C&amp;C: Generals: Zero Hour
 You don't install this one, you just unzip the zip file in the releases
 and execute the .exe file :)
 
+## Fixing ssleay32.dll Problem
+* Please install this fix: https://bibber.eu/downloads/cnc-ultimate-collection-launchers/
+
 ## Mod Installation Instructions
 * Locate your mod files. Most mods will come with a couple of .big files
   and no other files.
