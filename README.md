@@ -28,8 +28,8 @@ and execute the .exe file :)
 * For each mod, create a folder inside the Mods folder you created.
 * Inside each folder, place .big file but change the extension as .zbig.
 * If you've downloaded mods from red2.net, the mod files should already have .zbig extension.
-* Sometimes you might choose to select Zero Hour folder again. If so, go into
-  C:\Users\\{user-id}\AppData\Local\mod4 and remove config.json file.
+* Sometimes you might wish to choose to select Zero Hour folder again. If so, go into
+  delete mod4_config.json, which should be located where mod4.exe is.
 
 ## Launching Mods
 * Run the mod launcher program
@@ -48,8 +48,8 @@ and execute the .exe file :)
   Then you need to run Origin first, before launching the game.
 
 ## Where are the settings saved?
-* In folder C:\Users\{user-id}\AppData\Local\mod4,
-* The settings are saved in plain text, as config.json.
+* Settings are saved in mod4_config.json, in the same folder where mod4.exe is.
+* The settings are saved in plain text as JSON format.
 
 ## Compiling
 * The project is created and compiled with Lazarus 1.6 (for 32bits Windows).
