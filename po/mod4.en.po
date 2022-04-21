@@ -22,31 +22,31 @@ msgid "Failed to read ZH Registry %s"
 msgstr ""
 
 #: tformmain.btnmod.caption
-msgid "모드AI활성화"
+msgid "Enable mod AI"
 msgstr ""
 
 #: tformmain.btnmodoff.caption
 msgctxt "tformmain.btnmodoff.caption"
-msgid "모드 끄기"
+msgid "Mod Off"
 msgstr ""
 
 #: tformmain.btnmodon.caption
-msgid "모드 켜기"
+msgid "Mod on"
 msgstr ""
 
 #: tformmain.btnrestore.caption
-msgid "원래AI복구"
+msgid "Disable mod AI"
 msgstr ""
 
 #: tformmain.btnrun.caption
-msgid "실행"
+msgid "Run"
 msgstr ""
 
 #: tformmain.btnrunwin.caption
-msgid "창모드 실행"
+msgid "Run Windowed"
 msgstr ""
 
 #: tformmain.caption
-msgid "모드 실행기"
+msgid "ZH Mod Launcher"
 msgstr ""
 
