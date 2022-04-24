@@ -1,52 +1,47 @@
 msgid ""
-msgstr "Content-Type: text/plain; charset=UTF-8"
-
-#: mainform.lbl_no_exe_file
-msgid "Game file %s does not exists!"
 msgstr ""
+"Content-Type: text/plain; charset=UTF-8"
+"Last-Translator: bitsbb01\n"
+"Language: en\n"
 
-#: mainform.lbl_no_mod_found
-msgid "No mod has been found."
-msgstr ""
+#: mainform.modoff
+msgid "모드 꺼짐"
+msgstr "Mod deactivated"
 
-#: mainform.lbl_warning
-msgid "Warning"
-msgstr ""
+#: mainform.modon
+#, object-pascal-format
+msgid "%0:s 켜짐"
+msgstr "%0:s mod activated"
 
-#: mainform.lbl_zh_not_installed
-msgid "ZH is not installed!"
-msgstr ""
-
-#: mainform.lbl_zh_reg_not_found
-msgid "Failed to read ZH Registry %s"
-msgstr ""
+#: mainform.nomodsfound
+msgid "발견된 모드가 없습니다."
+msgstr "No mods detected."
 
 #: tformmain.btnmod.caption
-msgid "Enable mod AI"
-msgstr ""
+msgid "모드AI활성화"
+msgstr "Enable Mod AI"
 
 #: tformmain.btnmodoff.caption
-msgctxt "tformmain.btnmodoff.caption"
-msgid "Mod Off"
-msgstr ""
+msgid "모드 끄기"
+msgstr "Mod Off"
 
 #: tformmain.btnmodon.caption
-msgid "Mod on"
-msgstr ""
+msgid "모드 켜기"
+msgstr "Mod On"
 
 #: tformmain.btnrestore.caption
-msgid "Disable mod AI"
-msgstr ""
+msgid "원래AI복구"
+msgstr "Disable Mod AI"
 
 #: tformmain.btnrun.caption
-msgid "Run"
-msgstr ""
+msgid "실행"
+msgstr "Run"
 
 #: tformmain.btnrunwin.caption
-msgid "Run Windowed"
-msgstr ""
+msgid "창모드 실행"
+msgstr "Run Windowed"
 
 #: tformmain.caption
-msgid "ZH Mod Launcher"
-msgstr ""
+msgid "모드 실행기"
+msgstr "ZH Mod Launcher"
 

@@ -61,3 +61,6 @@ and execute the .exe file :)
 * OS BIG Editor by Carlos "Banshee" Muniz
 * RefPack decompression by Jonathan Wilson (jonwil)
 * See [AboutBig.txt](AboutBig.txt) for details
+
+## Credits
+* English translation by bitsbb01

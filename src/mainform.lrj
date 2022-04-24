@@ -1,0 +1,9 @@
+{"version":1,"strings":[
+{"hash":129038336,"name":"tformmain.caption","sourcebytes":[235,170,168,235,147,156,32,236,139,164,237,150,137,234,184,176],"value":"\uBAA8\uB4DC \uC2E4\uD589\uAE30"},
+{"hash":257308393,"name":"tformmain.btnrun.caption","sourcebytes":[236,139,164,237,150,137],"value":"\uC2E4\uD589"},
+{"hash":154150601,"name":"tformmain.btnrunwin.caption","sourcebytes":[236,176,189,235,170,168,235,147,156,32,236,139,164,237,150,137],"value":"\uCC3D\uBAA8\uB4DC \uC2E4\uD589"},
+{"hash":146527572,"name":"tformmain.btnmod.caption","sourcebytes":[235,170,168,235,147,156,65,73,237,153,156,236,132,177,237,153,148],"value":"\uBAA8\uB4DCAI\uD65C\uC131\uD654"},
+{"hash":77354684,"name":"tformmain.btnrestore.caption","sourcebytes":[236,155,144,235,158,152,65,73,235,179,181,234,181,172],"value":"\uC6D0\uB798AI\uBCF5\uAD6C"},
+{"hash":158300704,"name":"tformmain.btnmodoff.caption","sourcebytes":[235,170,168,235,147,156,32,235,129,132,234,184,176],"value":"\uBAA8\uB4DC \uB044\uAE30"},
+{"hash":154401312,"name":"tformmain.btnmodon.caption","sourcebytes":[235,170,168,235,147,156,32,236,188,156,234,184,176],"value":"\uBAA8\uB4DC \uCF1C\uAE30"}
+]}

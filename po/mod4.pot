@@ -1,24 +1,17 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
-#: mainform.lbl_no_exe_file
-msgid "Game file %s does not exists!"
+#: mainform.modoff
+msgid "모드 꺼짐"
 msgstr ""
 
-#: mainform.lbl_no_mod_found
-msgid "No mod has been found."
+#: mainform.modon
+#, object-pascal-format
+msgid "%0:s 켜짐"
 msgstr ""
 
-#: mainform.lbl_warning
-msgid "Warning"
-msgstr ""
-
-#: mainform.lbl_zh_not_installed
-msgid "ZH is not installed!"
-msgstr ""
-
-#: mainform.lbl_zh_reg_not_found
-msgid "Failed to read ZH Registry %s"
+#: mainform.nomodsfound
+msgid "발견된 모드가 없습니다."
 msgstr ""
 
 #: tformmain.btnmod.caption
@@ -26,7 +19,6 @@ msgid "모드AI활성화"
 msgstr ""
 
 #: tformmain.btnmodoff.caption
-msgctxt "TFORMMAIN.BTNMODOFF.CAPTION"
 msgid "모드 끄기"
 msgstr ""
 

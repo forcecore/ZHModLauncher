@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, ExtCtrls, ComCtrls, Windows, jsonConf,
+  StdCtrls, ExtCtrls, LCLTranslator, ComCtrls, Windows, jsonConf,
   // my additions
   Common, Settings, BIG_File;
 
@@ -60,6 +60,11 @@ type
 var
   FormMain: TFormMain;
 
+resourcestring
+  ModOff = '모드 꺼짐';
+  ModOn = '%0:s 켜짐';
+  NoModsFound = '발견된 모드가 없습니다.';
+
 implementation
 
 { TFormMain }
@@ -100,7 +105,7 @@ begin
   SysUtils.FindClose( info );
 
   if( ModList.Items.Count = 0 ) then
-    Warning( '발견된 모드가 없습니다.' )
+    Warning(NoModsFound)
   else
     ModList.ItemIndex:= 0; // select 1st item.
 end;
@@ -296,9 +301,9 @@ var
 begin
   mod_name := settings.conf.GetValue( '/current_mod/name', '' );
   if length( mod_name ) = 0 then
-    StatusBar1.SimpleText := '모드 꺼짐'
+    StatusBar1.SimpleText := ModOff
   else
-    StatusBar1.SimpleText := mod_name + ' 켜짐';
+    StatusBar1.SimpleText := format(ModOn, [mod_name]);
 end;
 
 procedure TFormMain.SavePos;
@@ -358,5 +363,5 @@ end;
 
 initialization
   {$I mainform.lrs}
-
+  SetDefaultLang('', 'po', '', false); // Make translations work
 end.
