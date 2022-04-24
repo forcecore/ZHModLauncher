@@ -42,6 +42,13 @@ type
     game_dir: string read GetGameDir write SetGameDir;
 end;
 
+resourcestring
+  DlgConfirm = '확인';
+  UseTheFollowingZhPath = '다음 제로아워 경로를 사용하겠습니까?:';
+  PoExeFile = 'Exe파일|*.exe';
+  PoDoesNotExist = '가 존재하지 않음!';
+  PoCantFindReg = '레지스트리로 제로아워 찾기 실패, Generals.exe를 직접 골라주세요.';
+
 implementation
 
 constructor TSettings.create;
@@ -88,7 +95,7 @@ begin
   if( FileExists( result ) ) then
     begin
       // Ask user confirmation
-       if MessageDlg( '확인', '다음 제로아워 경로를 사용하겠습니까?:' + sLineBreak + result,
+       if MessageDlg( DlgConfirm, UseTheFollowingZhPath + sLineBreak + result,
          mtConfirmation, [mbYes, mbNo],0) = mrYes
        then
          begin
@@ -104,7 +111,7 @@ begin
   try
     diag := TOpenDialog.create( nil );
     diag.Options := [ofFileMustExist];
-    diag.Filter := 'Exe파일|*.exe';
+    diag.Filter := PoExeFile;
     if diag.Execute then
       begin
         filename := diag.Filename;
@@ -146,7 +153,7 @@ begin
   // game_exe is the only parameter that is not checked by other routines.
   // checking it here...
   if( not FileExists( game_exe ) ) then
-    Warning( game_exe + '가 존재하지 않음!' );
+    Warning( game_exe + PoDoesNotExist );
 end;
 
 function TSettings.GetGameDir(): string;
@@ -210,7 +217,7 @@ begin
     reg.RootKey := HKEY_LOCAL_MACHINE;
     Result := ResolveZH(reg);
     if Result = '' then
-      Warning( '레지스트리로 제로아워 찾기 실패, Generals.exe를 직접 골라주세요.' );
+      Warning( PoCantFindReg );
   finally
     reg.Free;
   end;

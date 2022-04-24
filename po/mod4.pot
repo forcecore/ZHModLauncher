@@ -1,6 +1,10 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
+#: common.powarning
+msgid "경고"
+msgstr ""
+
 #: mainform.modoff
 msgid "모드 꺼짐"
 msgstr ""
@@ -12,6 +16,27 @@ msgstr ""
 
 #: mainform.nomodsfound
 msgid "발견된 모드가 없습니다."
+msgstr ""
+
+#: settings.dlgconfirm
+msgid "확인"
+msgstr ""
+
+#: settings.pocantfindreg
+msgid "레지스트리로 제로아워 찾기 실패, Generals.exe를 직접 골라주세요."
+msgstr ""
+
+#: settings.podoesnotexist
+msgctxt "settings.podoesnotexist"
+msgid "가 존재하지 않음!"
+msgstr ""
+
+#: settings.poexefile
+msgid "Exe파일|*.exe"
+msgstr ""
+
+#: settings.usethefollowingzhpath
+msgid "다음 제로아워 경로를 사용하겠습니까?:"
 msgstr ""
 
 #: tformmain.btnmod.caption

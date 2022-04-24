@@ -1,8 +1,11 @@
 msgid ""
 msgstr ""
-"Content-Type: text/plain; charset=UTF-8"
-"Last-Translator: bitsbb01\n"
+"Content-Type: text/plain; charset=UTF-8Last-Translator: bitsbb01\n"
 "Language: en\n"
+
+#: common.powarning
+msgid "경고"
+msgstr "Warning"
 
 #: mainform.modoff
 msgid "모드 꺼짐"
@@ -16,6 +19,27 @@ msgstr "%0:s mod activated"
 #: mainform.nomodsfound
 msgid "발견된 모드가 없습니다."
 msgstr "No mods detected."
+
+#: settings.dlgconfirm
+msgid "확인"
+msgstr "Confirm"
+
+#: settings.pocantfindreg
+msgid "레지스트리로 제로아워 찾기 실패, Generals.exe를 직접 골라주세요."
+msgstr "Failed to find Zero Hour folder via registry, please select Generals.exe manually."
+
+#: settings.podoesnotexist
+msgctxt "settings.podoesnotexist"
+msgid "가 존재하지 않음!"
+msgstr "doesn't exist!"
+
+#: settings.poexefile
+msgid "Exe파일|*.exe"
+msgstr "Executable files|*.exe"
+
+#: settings.usethefollowingzhpath
+msgid "다음 제로아워 경로를 사용하겠습니까?:"
+msgstr "Use the following Zero Hour folder?:"
 
 #: tformmain.btnmod.caption
 msgid "모드AI활성화"

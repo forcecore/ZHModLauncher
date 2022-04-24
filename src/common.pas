@@ -11,12 +11,15 @@ uses
 procedure Warning( t:string );
 function path_join( a: string; b:string ): string;
 
+resourcestring
+  PoWarning = '경고';
+
 implementation
 
 // show warning message
 procedure Warning( t:string );
 begin
-  Application.MessageBox( PChar(t), '경고', MB_ICONWARNING );
+  Application.MessageBox( PChar(t), PChar(PoWarning), MB_ICONWARNING );
 end;
 
 function path_join( a:string; b:string ): string;
